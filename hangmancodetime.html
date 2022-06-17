@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      //model
+      let wordList = ["shark", "dog", "crocodile", "snake", "mountain", "fish", "ocean", "astronaut"];
+      let random = Math.floor(Math.random() * wordList.length);
+      let randomWord = wordList[random];
+      let letterInput = "";
+      let randomWordArray = [];
+      let wrongLetters = [];
+      let wrongAnswers = 0;
+
+      //view
+      showChar();
+      updateView();
+      function updateView() {
+        let html = "";
+        html += `
+          <h1>HangMan</h1>
+          <p>wrong Answers: ${wrongAnswers}</p>
+          <br>${randomWordArray.join(" ")}
+
+          <hr>
+          <input type="text" oninput="letterInput=this.value"> <button onclick="checkLetter()""> CHECK</button>
+          <br>
+          <p>${wrongLetters.join(" ")}</p>
+          `;
+
+        document.getElementById("app").innerHTML = html;
+      }
+
+      //controller
+      function showChar() {
+        for (let i = 0; i < randomWord.length; i++) {
+          randomWordArray.push(" _ ");
+        }
+      }
+
+      function checkLetter() {
+        if(wrongAnswers >= 10) {
+               alert('you got hanged')
+               location.reload()
+           }
+           
+             
+          if(letterInput.length ==0){
+              alert('you have to send a letter on the input')
+              return
+          }
+
+          if(letterInput.length >1){
+              alert('too many letters')
+              return
+          }
+        if (randomWord.includes(letterInput)) {
+          for (let i = 0; i < randomWord.length; i++) {
+            
+            if (randomWord[i] == letterInput) {
+              randomWordArray[i] = " " + letterInput + " ";
+              
+            }
+          }
+          if (!randomWordArray.includes(" _ " )){
+           alert('Congratulations, you made it alive.')
+             
+              location.reload()
+          }
+          
+        } else {
+          wrongAnswers++;
+          wrongLetters.push(letterInput);
+        }
+        updateView();
+      }
+    </script>
+  </body>
+</html>
